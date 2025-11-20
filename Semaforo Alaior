@@ -1,0 +1,188 @@
+int luzVerde[] = {7, 2, 10};
+int luzRoja[] = {9, 4, 12};
+int luzAmarilla[] = {8, 3, 11};
+int luzpeatonesVerde[] = {5, A0};
+int luzpeatonesRoja[] = {6, A1};
+int botonsem = 17;
+
+
+
+
+int sensorLuz = A2;
+int valorDia = 300;
+
+
+
+
+int tEspera = 7000;
+
+
+int estadoBoton = 0;
+int sem = 0;
+
+
+// los pines 0 y 1 son analogicos, en los pines digitales no se pueden usar
+// El primer numero de cada luz es del primero semaforo, y asi para el segundo y el tercero
+// Las luces de peatones van del 2 al 3 porque no hay paso de peatones en el semaforo 1
+
+
+
+
+void setup() {
+ // put your setup code here, to run once:
+ for (int pines = 0; pines < 3; pines++) {
+   pinMode (luzVerde[pines], OUTPUT);
+   pinMode (luzRoja[pines], OUTPUT);
+   pinMode (luzAmarilla[pines], OUTPUT);
+ }
+ for (int pinespeatones = 0; pinespeatones < 2; pinespeatones++) {
+   pinMode (luzpeatonesVerde[pinespeatones], OUTPUT);
+   pinMode (luzpeatonesRoja[pinespeatones], OUTPUT);
+ }
+// Aqui se ponen todos los pines como OUTPUTS usando dos "for"
+pinMode(sensorLuz, INPUT);
+pinMode(botonsem, INPUT);
+Serial.begin(9600);
+todosRojo();
+delay(5000);
+}
+
+
+// Al principio de la funcion lee si es de dia
+// Si es de noche se ejecuta la funcion noche, que pone todos los semaforos en amarillos
+void loop() {
+ apagarTodos();
+ int valorLuz = analogRead(sensorLuz);
+ Serial.println(valorLuz);
+ if (valorLuz >= valorDia) {
+  noche();
+ }
+ if (valorLuz < valorDia) {
+   for (sem = 0; sem < 3; sem++) {
+     apagarTodos();
+     encendersemaforo();
+     tiempoEspera();
+   }
+ }
+}
+
+
+
+
+//Funcion para encender el semaforo indicado en el for del loop si es de dia
+void encendersemaforo() {
+ apagarTodos();
+ digitalWrite(luzVerde[sem], HIGH);
+ // Si es el primer semaforo
+ if (sem == 0) {
+   for (int encender = 1; encender < 3; encender++) {
+     digitalWrite(luzRoja[encender],HIGH);     
+   }
+   digitalWrite(luzpeatonesVerde[1], HIGH);
+   digitalWrite(luzpeatonesRoja[0], HIGH);
+ }
+ //Si es el segundo semaforo
+ if (sem == 1) {
+   for (int encender = 0; encender < 3; encender++) {
+     if (encender != 1) {
+      digitalWrite(luzRoja[encender], HIGH);
+     }
+   }
+   digitalWrite(luzpeatonesVerde[0], HIGH);
+   digitalWrite(luzpeatonesRoja[1], HIGH);
+ }
+ // si es el tercer semaforo
+ if (sem == 2) {
+   for (int encender = 0; encender < 3; encender ++) {
+     if (encender != 2) {
+       digitalWrite(luzRoja[encender], HIGH);
+     }
+   }
+   digitalWrite(luzpeatonesRoja[0], HIGH);
+   digitalWrite(luzpeatonesRoja[1], HIGH);
+ }
+}
+
+
+
+
+// Funcion para apagar la luz verde para encender la luz amarilla del mismo semaforo
+void amarillo() {
+ digitalWrite(luzVerde[sem], LOW);
+ for (int blink = 0; blink < 3; blink++) {
+   digitalWrite(luzAmarilla[sem], HIGH);
+   delay(500);
+   digitalWrite(luzAmarilla[sem], LOW);
+   delay(500);
+ }
+}
+
+
+// Funcion que se ejecuta si es de noche
+void noche() {
+  Serial.print("Es de noche");
+  for (int blink = 0; blink < 3; blink++) {
+     for (int blink = 0; blink < 3; blink++) {   
+       digitalWrite(luzAmarilla[blink], HIGH);
+     }
+   delay(2000);
+     for (int blink = 0; blink < 3; blink++) {
+       digitalWrite(luzAmarilla[blink], HIGH);
+     }
+   delay(1000);
+   }
+}
+
+
+//Funcion que define cuanto tiempo dura el semaforo en verde
+//Luego del tiempo ejecuta la funcion de luces amarillas
+void tiempoEspera() {
+ delay(2000);
+ estadoBoton = digitalRead(botonsem);
+ if (estadoBoton == HIGH) {
+   delay(tEspera / 7);
+   amarillo();
+   if (sem == 0) {
+     sem = 1;
+   }
+   if (sem == 1) {
+     sem = 0;
+   }
+ }
+ else {
+   delay(tEspera);
+   amarillo();
+ }
+
+
+}
+
+
+
+
+// Funcion para apagar todo y simplificar el programa
+void apagarTodos() {
+   for (int apagar = 0; apagar < 3; apagar++) {
+    digitalWrite(luzVerde[apagar], LOW);
+    digitalWrite(luzRoja[apagar], LOW);
+    digitalWrite(luzAmarilla[apagar], LOW);
+   }
+   for (int apagar = 0; apagar < 2; apagar++) {
+    digitalWrite(luzpeatonesRoja[apagar], LOW);
+    digitalWrite(luzpeatonesVerde[apagar], LOW);
+   }
+}
+
+
+// Funcion para poner todos los semafotos en rojo
+void todosRojo() {
+ apagarTodos();
+ for (int rojo = 0; rojo < 3; rojo++) {
+   digitalWrite(luzRoja[rojo], HIGH);
+ }
+ for (int rojo = 0; rojo < 2; rojo++) {
+   digitalWrite(luzpeatonesRoja[rojo], HIGH);
+ }
+}
+
+
