@@ -1,32 +1,23 @@
 int luzVerde[] = {7, 2, 10};
 int luzRoja[] = {9, 4, 12};
 int luzAmarilla[] = {8, 3, 11};
+
 int luzpeatonesVerde[] = {5, A0};
 int luzpeatonesRoja[] = {6, A1};
+
 int botonsem = 17;
-
-
-
 
 int sensorLuz = A2;
 int valorDia = 300;
 
-
-
-
 int tEspera = 7000;
-
 
 int estadoBoton = 0;
 int sem = 0;
 
-
-// los pines 0 y 1 son analogicos, en los pines digitales no se pueden usar
+// los pines A0 y A1 son analogicos, en los pines digitales no se pueden usar
 // El primer numero de cada luz es del primero semaforo, y asi para el segundo y el tercero
 // Las luces de peatones van del 2 al 3 porque no hay paso de peatones en el semaforo 1
-
-
-
 
 void setup() {
  // put your setup code here, to run once:
@@ -47,7 +38,6 @@ todosRojo();
 delay(5000);
 }
 
-
 // Al principio de la funcion lee si es de dia
 // Si es de noche se ejecuta la funcion noche, que pone todos los semaforos en amarillos
 void loop() {
@@ -66,9 +56,6 @@ void loop() {
  }
 }
 
-
-
-
 //Funcion para encender el semaforo indicado en el for del loop si es de dia
 void encendersemaforo() {
  apagarTodos();
@@ -78,7 +65,7 @@ void encendersemaforo() {
    for (int encender = 1; encender < 3; encender++) {
      digitalWrite(luzRoja[encender],HIGH);     
    }
-   digitalWrite(luzpeatonesVerde[1], HIGH);
+   digitalWrite(luzpeatonesVerde[1], HIGH); // Los peatones del 3er semaforo pueden pasar
    digitalWrite(luzpeatonesRoja[0], HIGH);
  }
  //Si es el segundo semaforo
@@ -88,7 +75,7 @@ void encendersemaforo() {
       digitalWrite(luzRoja[encender], HIGH);
      }
    }
-   digitalWrite(luzpeatonesVerde[0], HIGH);
+   digitalWrite(luzpeatonesVerde[0], HIGH); // Los peatones del 2do semaforo pueden pasar
    digitalWrite(luzpeatonesRoja[1], HIGH);
  }
  // si es el tercer semaforo
@@ -98,13 +85,10 @@ void encendersemaforo() {
        digitalWrite(luzRoja[encender], HIGH);
      }
    }
-   digitalWrite(luzpeatonesRoja[0], HIGH);
+   digitalWrite(luzpeatonesRoja[0], HIGH); // No pasa nadie
    digitalWrite(luzpeatonesRoja[1], HIGH);
  }
 }
-
-
-
 
 // Funcion para apagar la luz verde para encender la luz amarilla del mismo semaforo
 void amarillo() {
@@ -116,7 +100,6 @@ void amarillo() {
    delay(500);
  }
 }
-
 
 // Funcion que se ejecuta si es de noche
 void noche() {
@@ -133,32 +116,23 @@ void noche() {
    }
 }
 
-
 //Funcion que define cuanto tiempo dura el semaforo en verde
 //Luego del tiempo ejecuta la funcion de luces amarillas
 void tiempoEspera() {
- delay(2000);
+ delay(1000);
  estadoBoton = digitalRead(botonsem);
- if (estadoBoton == HIGH) {
-   delay(tEspera / 7);
-   amarillo();
-   if (sem == 0) {
-     sem = 1;
-   }
+ if (estadoBoton == HIGH) { // Si se pulsa el boton de peatones
+   delay(tEspera / 7);      // Espera 1 segundo
+   amarillo();              // Luces amarillas del semaforo que este en verde
    if (sem == 1) {
-     sem = 0;
+     sem = 2;
    }
  }
  else {
    delay(tEspera);
    amarillo();
  }
-
-
 }
-
-
-
 
 // Funcion para apagar todo y simplificar el programa
 void apagarTodos() {
@@ -173,7 +147,6 @@ void apagarTodos() {
    }
 }
 
-
 // Funcion para poner todos los semafotos en rojo
 void todosRojo() {
  apagarTodos();
@@ -184,5 +157,3 @@ void todosRojo() {
    digitalWrite(luzpeatonesRoja[rojo], HIGH);
  }
 }
-
-
