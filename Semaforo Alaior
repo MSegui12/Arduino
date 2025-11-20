@@ -105,15 +105,27 @@ void amarillo() {
 void noche() {
   Serial.print("Es de noche");
   for (int blink = 0; blink < 3; blink++) {
-     for (int blink = 0; blink < 3; blink++) {   
-       digitalWrite(luzAmarilla[blink], HIGH);
+    apagarTodos();
+     for (int i = 0; i < 3; i++) {   
+       digitalWrite(luzAmarilla[i], HIGH);
      }
    delay(2000);
-     for (int blink = 0; blink < 3; blink++) {
-       digitalWrite(luzAmarilla[blink], HIGH);
+     for (int i = 0; i < 3; i++) {
+       digitalWrite(luzAmarilla[i], HIGH);
      }
-   delay(1000);
+   delay(1000);  // Si es de noche se apagan todas las luces y parpadean las luces amarillas
+   estadoBoton = digitalRead(botonsem);  // Si se pulsa el boton de los peatones se apaga todo, las luces amarillas cambian a rojo y los semaforos de peatones se ponen en verde
+   if (estadoBoton == HIGH) {
+    apagarTodos();
+    for (int x = 0; x < 3; x++) {
+      digitalWrite(luzRoja[x], HIGH);
+      }
+    for (int x = 0; x < 2; x++) {
+      digitalWrite(luzpeatonesVerde[x], HIGH);
+    }
+    delay(tEspera);
    }
+  }
 }
 
 //Funcion que define cuanto tiempo dura el semaforo en verde
