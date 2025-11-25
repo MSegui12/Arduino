@@ -78,7 +78,7 @@ void encendersemaforo() {
    digitalWrite(luzpeatonesVerde[0], HIGH); // Los peatones del 2do semaforo pueden pasar
    digitalWrite(luzpeatonesRoja[1], HIGH);
  }
- // si es el tercer semaforo
+ // Si es el tercer semaforo
  if (sem == 2) {
    for (int encender = 0; encender < 3; encender ++) {
      if (encender != 2) {
@@ -109,13 +109,13 @@ void noche() {
      for (int i = 0; i < 3; i++) {   
        digitalWrite(luzAmarilla[i], HIGH);
      }
-   delay(2000);
+   delay(1000);
      for (int i = 0; i < 3; i++) {
-       digitalWrite(luzAmarilla[i], HIGH);
+       digitalWrite(luzAmarilla[i], LOW);
      }
    delay(1000);  // Si es de noche se apagan todas las luces y parpadean las luces amarillas
    estadoBoton = digitalRead(botonsem);  // Si se pulsa el boton de los peatones se apaga todo, las luces amarillas cambian a rojo y los semaforos de peatones se ponen en verde
-   if (estadoBoton == HIGH) {
+   if (estadoBoton == LOW) {
     apagarTodos();
     for (int x = 0; x < 3; x++) {
       digitalWrite(luzRoja[x], HIGH);
@@ -123,7 +123,7 @@ void noche() {
     for (int x = 0; x < 2; x++) {
       digitalWrite(luzpeatonesVerde[x], HIGH);
     }
-    delay(tEspera);
+    delay(5000);
    }
   }
 }
@@ -133,12 +133,10 @@ void noche() {
 void tiempoEspera() {
  delay(1000);
  estadoBoton = digitalRead(botonsem);
- if (estadoBoton == HIGH) { // Si se pulsa el boton de peatones
+ if (estadoBoton == LOW) { // Si se pulsa el boton de peatones
    delay(tEspera / 7);      // Espera 1 segundo
    amarillo();              // Luces amarillas del semaforo que este en verde
-   if (sem == 1) {
-     sem = 2;
-   }
+   
  }
  else {
    delay(tEspera);
