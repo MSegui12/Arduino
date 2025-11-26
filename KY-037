@@ -1,1 +1,25 @@
+https://docs.arduino.cc/language-reference/en/functions/math/map/
+https://arduinomodules.info/ky-037-high-sensitivity-sound-detection-module/
+https://blog.uelectronics.com/tarjetas-desarrollo/uso-de-los-sensores-de-sonido-ky-038-ky-037-para-controlar-el-encendido-de-un-foco/
 
+int leds[] = {2, 3, 4, 5, 6, 7, 8, 9, 10};
+// int sensorAnalog 
+
+void setup() {
+  // put your setup code here, to run once:
+  for (int i = 0; i < 10; i++ ) {
+    pinMode(leds[i], OUTPUT);
+    } 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
+
+void apagarLeds() {
+  for (int apagar = 0; apagar < 10; apagar++ ) {
+    digitalWrite(leds[apagar], LOW);
+    }
+  
+  }
