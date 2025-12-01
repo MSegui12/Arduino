@@ -2,24 +2,35 @@ https://docs.arduino.cc/language-reference/en/functions/math/map/
 https://arduinomodules.info/ky-037-high-sensitivity-sound-detection-module/
 https://blog.uelectronics.com/tarjetas-desarrollo/uso-de-los-sensores-de-sonido-ky-038-ky-037-para-controlar-el-encendido-de-un-foco/
 
-int leds[] = {2, 3, 4, 5, 6, 7, 8, 9, 10};
-// int sensorAnalog 
+int leds[] = {2,3,4,5,6,7,8,9};
+int sensorSonido=A0;
+int valBase = 0;
+int valSonido = valBase;
+int valAnterior = valBase;
 
 void setup() {
-  // put your setup code here, to run once:
-  for (int i = 0; i < 10; i++ ) {
+  Serial.begin(9600);
+  for (int i = 0; i < 10; i++); {
     pinMode(leds[i], OUTPUT);
-    } 
+  }
+  pinMode(sensorSonido, INPUT);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-}
-
-void apagarLeds() {
-  for (int apagar = 0; apagar < 10; apagar++ ) {
-    digitalWrite(leds[apagar], LOW);
+  valSonido = analogRead(sensorSonido);
+  Serial.println(valSonido);
+  valSonido = map(valSonido, 0, 1023, 0, 9);
+  if (valSonido > valAnterior) {  //Si el valor actual del sonido es mayor al valor anterior...
+    for (valAnterior=0; valAnterior =< valSonido; valAnterior++){ // Encender Leds hasta el valor actual de sonido
+      digitalWrite(leds[valAnterior], HIGH);
+      delay(50);
     }
-  
   }
+  else { // Si el valor actual es menor...
+    for (valAnterior=9; valAnterior > valSonido; valAnterior--){  // Apagar leds mayores al valor del Sonido
+      digitalWrite(leds[valAnterior], LOW);
+      delay(50);
+    }
+  }
+}
