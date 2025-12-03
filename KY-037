@@ -22,16 +22,11 @@ void loop() {
   Serial.println(valSonido);
   valSonido = map(valSonido, 0, 1023, 0, 7);
   Serial.println(valSonido);
-  if (valSonido > valAnterior) {  //Si el valor actual del sonido es mayor al valor anterior...
     for (valAnterior=0; valAnterior <= valSonido; valAnterior++){ // Encender Leds hasta el valor actual de sonido
       digitalWrite(leds[valAnterior], HIGH);
-      delay(50);
-    }
   }
-  else { // Si el valor actual es menor...
     for (valAnterior=9; valAnterior > valSonido; valAnterior--){  // Apagar leds mayores al valor del Sonido
       digitalWrite(leds[valAnterior], LOW);
-      delay(50);
-    }
   }
+  delay(100);
 }
