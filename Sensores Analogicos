@@ -1,3 +1,5 @@
+// KY 036
+//
 int leds[] = {2,3,4,5,6,7,8,9};
 int sensorSonido=A0;
 int valBase = 0;
@@ -25,4 +27,31 @@ void loop() {
       digitalWrite(leds[valAnterior], LOW);
   }
   delay(100);
+}
+//
+// RGB + Potenciometro
+//
+int led1 = 6;
+int led2 = 5;
+int led3 = 3;
+
+int poten = A0;
+int valorPot = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(poten, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  valorPot = analogRead(poten);
+  //Serial.println(valorPot);
+  valorPot = map(valorPot, 0, 1023, 0, 255);
+  analogWrite(led3, valorPot);
+  analogWrite(led2, 255 - valorPot);
+  analogWrite(led1, 0);
 }
