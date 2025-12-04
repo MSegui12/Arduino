@@ -1,0 +1,35 @@
+int led1 = 6;
+int led2 = 5;
+int led3 = 3;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+}
+
+void loop() {
+  //Encender Color Especifico
+  analogWrite(led1, 255);
+  analogWrite(led2, 255);
+  analogWrite(led3, 255);
+  delay(5000);
+
+  //Fade
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(led3, 255 - i);
+    analogWrite(led1, i);
+    delay(10);
+  }
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(led1, 255 - i);
+    analogWrite(led2, i);
+    delay(10);
+  }
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(led2, 255 - i);
+    analogWrite(led3, i);
+    delay(10);
+  }
+}
