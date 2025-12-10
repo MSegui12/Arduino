@@ -18,9 +18,10 @@ void setup() {
 void loop() {
   leerSensores();
   encenderYapagar();
-  if (valorLDR > 400) {
+  if (valorLDR > 600) {
     apagarpares();
   }
+  delay(500);
 }
 
 
@@ -40,10 +41,11 @@ void encenderYapagar() {
   for (int i = 0; i <= valorPOT; i++) {
     digitalWrite(matriuDeLeds[i], HIGH);
   }
-  for (int i = 0; i < valorPOT; i++) {
-    digitalWrite(matriuDeLeds[9 - i], LOW);
+  if (valorPOT != 9) {
+    for (int i = 0; i < valorPOT; i++) {
+      digitalWrite(matriuDeLeds[9 - i], LOW);
+    }
   }
-  
 }
 
 
@@ -54,3 +56,4 @@ void apagarpares() {
     }  
   }
 }
+
