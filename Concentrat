@@ -1,0 +1,56 @@
+
+int matriuDeLeds[] = {2,3,4,5,6,7,8,9,10,11};
+int valorLDR = 0;
+int valorPOT = 0;
+int pinPOT = A0;
+int pinLDR = A1;
+
+void setup() {
+  // put your setup code here, to run once:
+  for (int i = 0; i < 11; i++) {
+    pinMode(matriuDeLeds[i], OUTPUT);
+  }
+  pinMode(pinPOT, INPUT);
+  pinMode(pinLDR, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  leerSensores();
+  encenderYapagar();
+  if (valorLDR > 400) {
+    apagarpares();
+  }
+}
+
+
+void leerSensores() {
+  valorPOT = analogRead(pinPOT);
+  Serial.println(valorPOT);
+  valorPOT = map(valorPOT, 0, 1023, 0, 9);
+  valorLDR = analogRead(pinLDR);
+
+  Serial.print("valor del potenciómetro es:");
+  Serial.println(valorPOT);
+  Serial.print("valor del LDR es:");
+  Serial.println(valorLDR);
+}
+
+void encenderYapagar() {
+  for (int i = 0; i <= valorPOT; i++) {
+    digitalWrite(matriuDeLeds[i], HIGH);
+  }
+  for (int i = 0; i < valorPOT; i++) {
+    digitalWrite(matriuDeLeds[9 - i], LOW);
+  }
+  
+}
+
+
+void apagarpares() {
+  for (int i = 0; i < 10; i++) {
+    if (matriuDeLeds[i]%2 != 0) {
+      digitalWrite(matriuDeLeds[i], LOW);
+    }  
+  }
+}
